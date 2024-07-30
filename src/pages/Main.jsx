@@ -20,8 +20,8 @@ const Main = () => {
                 }
                 {
                     popUp &&
-                    <div className="fixed inset-0  flex justify-center items-center z-50">
-                        <div className="bg-white rounded shadow-lg">
+                    <div className="absolute inset-0  flex justify-center  items-center z-50">
+                        <div className="bg-white w-[80%] rounded shadow-lg shadow-black">
                             {popUp}
                         </div>
                     </div>

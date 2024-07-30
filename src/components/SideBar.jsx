@@ -1,22 +1,22 @@
 import { CiSearch } from "react-icons/ci";
 import { IoCalendarNumberOutline } from "react-icons/io5";
 import NewTask from "./NewTask";
-
+import SearchBar from "./SearchBar";
 import { IoIosAddCircle } from "react-icons/io";
 const SideBar = ({setPopUp}) => {
     const sideBarItems = [
         {
             logo: <IoIosAddCircle className="text-2xl text-[rgb(220,77,63)]" />,
             name: <div className="font-bold text-[rgb(220,77,63)] text-lg">Add</div>,
-            popUp : <NewTask />
+            popUp : <NewTask setPopUp = {setPopUp}/>
         },
         {
             logo: <CiSearch className="text-xl" />,
             name: "Search",
-            popUp : null
+            popUp : <SearchBar/>
         },
         {
-            logo : <IoCalendarNumberOutline/>,
+            logo : <div className="border border-[rgb(220,77,63)] text-black text-sm rounded-full p-[2px]">30</div>,
             name : "Today",
             popUp : null
         }
