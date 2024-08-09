@@ -1,9 +1,14 @@
 {
-    "tasks" : [
+    "tasks": [
         {
-            "id" : "1",
-            "title" : "Gym",
-            "description" : "Go to gym"
+            "id": "1",
+            "title": "Gym",
+            "description": "Go to gym"
+        },
+        {
+            "id": "2",
+            "title": "Cooking",
+            "description": "Chicken fry and Sambar"
         }
     ]
 }
