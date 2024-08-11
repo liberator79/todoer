@@ -5,24 +5,27 @@ import { v4 as uuidv4 } from 'uuid';
 import { addTask } from "../api";
 import Modal from "./Modal";
 import { useRouter } from "next/navigation";
-import { ITasks } from "@/types/tasks.type";
+import { getFormattedDate } from "../utils/getDate";
 const AddTask = () => {
     const router = useRouter();
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [task, setTask] = useState<string>("");
     const description = useRef<HTMLInputElement>(null);
+    
     const handleSubmitTask = async () => {
-        if(task?.trim() == "")return;
+        if (task?.trim() == "") return;
         const addedTask = await addTask({
-            id : uuidv4(),
+            id: uuidv4(),
             title: task,
-            description : description.current?.value,
-            isCompleted : false
+            description: description.current?.value,
+            isCompleted: false,
+            updatedAt: getFormattedDate()
         });
         setTask("");
         if (description.current) {
             description.current.value = "";
         }
+        setIsOpen(false);
         router.refresh();
     }
     return (
@@ -35,7 +38,7 @@ const AddTask = () => {
                 <div className="flex flex-col w-full gap-3 cu">
                     <h3>Add New Task</h3>
                     <label className="input input-bordered flex items-center gap-2 w-full">
-                        <input type="text" className="grow font-bold" placeholder="Title" onChange={(e) => { setTask(e.target.value) }} value={task}/>
+                        <input type="text" className="grow font-bold" placeholder="Title" onChange={(e) => { setTask(e.target.value) }} value={task} />
                         <span className="badge badge-primary text-[10px] font-light">Required</span>
                     </label>
                     <label className="input input-bordered flex items-center gap-2 w-full">

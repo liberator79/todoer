@@ -1,5 +1,5 @@
 import { ITasks } from "@/types/tasks.type";
-
+import { getFormattedDate } from "./utils/getDate";
 export const getAllTodos = async () : Promise<ITasks[]> => {
     const res = await fetch(`http://localhost:3001/tasks`, {cache: 'no-store'});
     const tasks = res.json();
@@ -59,14 +59,14 @@ export const deleteTask = async (id: string) => {
 
 
 
-export const editTaskAPI = async (id:string,title : string, description? :string)=> {
+export const editTaskAPI = async (id:string,title : string,description? :string)=> {
     try {
         const res = await fetch(`http://localhost:3001/tasks/${id}`, {
             method: "PATCH",
             headers: {
                 'Content-Type': "application/json",
             },
-            body: JSON.stringify({title, description})
+            body: JSON.stringify({title, description, updatedAt : getFormattedDate()})
         });
 
         if (!res.ok) {

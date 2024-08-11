@@ -15,7 +15,7 @@ const Task: React.FC<TaskProps> = ({ task }) => {
     const [isTaskOpen, setTaskOpen] = useState<boolean>(false);
     const [isEditOpen, setEditOpen] = useState<boolean>(false);
     const [editTask, setEditTask] = useState<string>(task.title);
-    const editedDescription = useRef<HTMLInputElement>(null);
+    const [editedDescription, setEditedDescription] = useState<string>(task.description || "");
     const handleCompleted = async () => {
         toast.promise(
             taskDone(task.id),
@@ -40,7 +40,7 @@ const Task: React.FC<TaskProps> = ({ task }) => {
     }
     const handleEditTask = async () => {
         toast.promise(
-            editTaskAPI(task.id, editTask, editedDescription.current?.value),
+            editTaskAPI(task.id, editTask, editedDescription),
             {
                 loading: 'Updating...',
                 success: <b>Updated</b>,
@@ -64,7 +64,9 @@ const Task: React.FC<TaskProps> = ({ task }) => {
                             <h3 className='text-md break-words whitespace-normal font-light'>{task.description}</h3>
 
                         </div>
-
+                        <div className='flex justify-start font-light text-[0.8rem]'>
+                            Updated on : {task.updatedAt}
+                        </div>
                     </div>
                 </Modal>
                 <label>
@@ -101,7 +103,13 @@ const Task: React.FC<TaskProps> = ({ task }) => {
                                 <span className="badge badge-primary text-[10px] font-light">Required</span>
                             </label>
                             <label className="input input-bordered flex items-center gap-2 w-full">
-                                <input type="text" className="grow" placeholder="Description" ref={editedDescription} />
+                                <input
+                                    type="text"
+                                    className="grow"
+                                    placeholder="Description"
+                                    value={editedDescription}
+                                    onChange={(e) => setEditedDescription(e.target.value)}
+                                />
                                 <span className="badge badge-primary text-[10px] font-light">Optional</span>
                             </label>
                             <button className="btn w-full btn-primary disabled:border-[rgb(116,128,255)] disabled:text-gray-600" disabled={editTask ? false : true} onClick={handleEditTask}>
