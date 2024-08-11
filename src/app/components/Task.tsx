@@ -3,27 +3,63 @@ import { FaRegEdit } from "react-icons/fa";
 import { MdOutlineDelete } from "react-icons/md";
 import Modal from "./Modal"
 import { ITasks } from '@/types/tasks.type';
+import { taskDone } from '../api';
+import toast from 'react-hot-toast';
+import { useRouter } from "next/navigation";
+import { deleteTask } from '../api';
 interface TaskProps {
     task: ITasks
 }
 const Task: React.FC<TaskProps> = ({ task }) => {
+    const router = useRouter();
     const [isTaskOpen, setTaskOpen] = useState<boolean>(false);
+    const handleCompleted = async () => {
+        toast.promise(
+            taskDone(task.id),
+            {
+                loading: 'Updating...',
+                success: <b>Updated</b>,
+                error: <b>Something went wrong</b>,
+            }
+        );
+        router.refresh();
+    }
+    const handleDelete = () => {
+        toast.promise(
+            deleteTask(task.id),
+            {
+                loading: 'Deleting...',
+                success: <b>Deleted</b>,
+                error: <b>Something went wrong</b>,
+            }
+        );
+        router.refresh();
+    }
     return (
 
         <tr>
 
             <th>
                 <Modal isOpen={isTaskOpen} setIsOpen={setTaskOpen}>
-                    <span className='text-gray-500'>Task Details</span>
-                    <div className='flex flex-col gap-1 flex-wrap'>
 
-                        <h1 className='font-bold text-lg'>{task.title}</h1>
-                        <h3 className='text-md break-words whitespace-normal font-light'>{task.description}</h3>
+                    <div className='flex flex-col gap-5 flex-wrap'>
+                        <span className='text-gray-500'>Task Details</span>
+                        <div className='gap-0'>
+                            <h1 className='font-bold text-lg'>{task.title}</h1>
+                            <h3 className='text-md break-words whitespace-normal font-light'>{task.description}</h3>
+
+                        </div>
+                        <div className="flex  gap-3 justify-end">
+                            <FaRegEdit className="text-lg cursor-pointer " />
+                            <MdOutlineDelete className="text-red-600 text-lg cursor-pointer" onClick={handleDelete} />
+                        </div>
                     </div>
                 </Modal>
                 <label>
-                    <input type="checkbox" className={`checkbox checked:checkbox-success`}
+                    <input type="checkbox" className={`checkbox checked:checkbox-success disabled:checkbox-success disabled:opacity-100`}
                         defaultChecked={task.isCompleted}
+                        disabled={task.isCompleted}
+                        onClick={handleCompleted}
                     />
                 </label>
             </th>
@@ -39,11 +75,8 @@ const Task: React.FC<TaskProps> = ({ task }) => {
                 </div>
 
             </td>
-            <td>
-                <div className="flex gap-5">
-                    <FaRegEdit className="text-lg cursor-pointer " />
-                    <MdOutlineDelete className="text-red-600 text-lg cursor-pointer" />
-                </div>
+            <td className='cursor-pointer' onClick={() => { setTaskOpen(true) }}>
+                More Info
             </td>
         </tr>
     )

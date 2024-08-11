@@ -1,7 +1,7 @@
-import {getAllTodos} from "./api";
+import { getAllTodos } from "./api";
 import AddTask from "./components/AddTask";
 import AllTasks from "./components/AllTasks";
-
+import { Toaster } from 'react-hot-toast';
 export default async function Home() {
   const tasks = await getAllTodos();
   return (
@@ -9,7 +9,10 @@ export default async function Home() {
       <div className="my-5 text-center flex flex-col gap-5">
         <h1 className="font-bold text-2xl">Todo</h1>
         <AddTask />
-        <AllTasks tasks = {tasks}/>
+        <AllTasks tasks={tasks} />
+        <Toaster
+          position="top-right"
+        />
       </div>
     </main>
   );

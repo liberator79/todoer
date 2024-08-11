@@ -1,27 +1,9 @@
 {
   "tasks": [
     {
-      "id": "1",
-      "title": "Gym",
-      "description": "Go to gym",
-      "isCompleted": false
-    },
-    {
-      "id": "10",
-      "title": "Leetcode Daily Challenge",
-      "description": "Complete leetcode daily challenge",
-      "isCompleted": true
-    },
-    {
-      "id": "ec8c3a20-7bd4-4976-9603-dc3f219b6787",
-      "title": "Hello",
-      "description": "this is a message",
-      "isCompleted": false
-    },
-    {
-      "id": "db1d2cd8-a7a2-4ca5-aca4-50cc08609815",
-      "title": "Hello",
-      "description": "This is message",
+      "id": "c112b3b3-ff7a-48a5-8a10-813bc490afb7",
+      "title": "Leetcode",
+      "description": "Daily Challenge",
       "isCompleted": false
     }
   ]
