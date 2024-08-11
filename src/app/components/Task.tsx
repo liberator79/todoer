@@ -1,9 +1,9 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { FaRegEdit } from "react-icons/fa";
 import { MdOutlineDelete } from "react-icons/md";
 import Modal from "./Modal"
 import { ITasks } from '@/types/tasks.type';
-import { taskDone } from '../api';
+import { editTaskAPI, taskDone } from '../api';
 import toast from 'react-hot-toast';
 import { useRouter } from "next/navigation";
 import { deleteTask } from '../api';
@@ -13,6 +13,9 @@ interface TaskProps {
 const Task: React.FC<TaskProps> = ({ task }) => {
     const router = useRouter();
     const [isTaskOpen, setTaskOpen] = useState<boolean>(false);
+    const [isEditOpen, setEditOpen] = useState<boolean>(false);
+    const [editTask, setEditTask] = useState<string>(task.title);
+    const editedDescription = useRef<HTMLInputElement>(null);
     const handleCompleted = async () => {
         toast.promise(
             taskDone(task.id),
@@ -35,6 +38,18 @@ const Task: React.FC<TaskProps> = ({ task }) => {
         );
         router.refresh();
     }
+    const handleEditTask = async () => {
+        toast.promise(
+            editTaskAPI(task.id, editTask, editedDescription.current?.value),
+            {
+                loading: 'Updating...',
+                success: <b>Updated</b>,
+                error: <b>Something went wrong</b>,
+            }
+        );
+        setEditOpen(false)
+        router.refresh();
+    }
     return (
 
         <tr>
@@ -49,10 +64,7 @@ const Task: React.FC<TaskProps> = ({ task }) => {
                             <h3 className='text-md break-words whitespace-normal font-light'>{task.description}</h3>
 
                         </div>
-                        <div className="flex  gap-3 justify-end">
-                            <FaRegEdit className="text-lg cursor-pointer " />
-                            <MdOutlineDelete className="text-red-600 text-lg cursor-pointer" onClick={handleDelete} />
-                        </div>
+
                     </div>
                 </Modal>
                 <label>
@@ -75,8 +87,29 @@ const Task: React.FC<TaskProps> = ({ task }) => {
                 </div>
 
             </td>
-            <td className='cursor-pointer' onClick={() => { setTaskOpen(true) }}>
-                More Info
+            <td >
+                <div className="flex  gap-3 ">
+
+                    <FaRegEdit className="text-lg cursor-pointer " onClick={() => { setEditOpen(true) }} />
+                    <MdOutlineDelete className="text-red-600 text-lg cursor-pointer" onClick={handleDelete} />
+                    <Modal isOpen={isEditOpen} setIsOpen={setEditOpen}>
+
+                        <div className="flex flex-col w-full gap-3 cu">
+                            <h3>Edit Task</h3>
+                            <label className="input input-bordered flex items-center gap-2 w-full">
+                                <input type="text" className="grow font-bold" placeholder="Title" onChange={(e) => { setEditTask(e.target.value) }} value={editTask} />
+                                <span className="badge badge-primary text-[10px] font-light">Required</span>
+                            </label>
+                            <label className="input input-bordered flex items-center gap-2 w-full">
+                                <input type="text" className="grow" placeholder="Description" ref={editedDescription} />
+                                <span className="badge badge-primary text-[10px] font-light">Optional</span>
+                            </label>
+                            <button className="btn w-full btn-primary disabled:border-[rgb(116,128,255)] disabled:text-gray-600" disabled={editTask ? false : true} onClick={handleEditTask}>
+                                Submit
+                            </button>
+                        </div>
+                    </Modal>
+                </div>
             </td>
         </tr>
     )

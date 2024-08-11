@@ -9,9 +9,10 @@ import { ITasks } from "@/types/tasks.type";
 const AddTask = () => {
     const router = useRouter();
     const [isOpen, setIsOpen] = useState<boolean>(false);
-    const [task, setTask] = useState<string>();
+    const [task, setTask] = useState<string>("");
     const description = useRef<HTMLInputElement>(null);
     const handleSubmitTask = async () => {
+        if(task?.trim() == "")return;
         const addedTask = await addTask({
             id : uuidv4(),
             title: task,

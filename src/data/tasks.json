@@ -1,10 +1,10 @@
 {
   "tasks": [
     {
-      "id": "c112b3b3-ff7a-48a5-8a10-813bc490afb7",
-      "title": "Leetcode",
-      "description": "Daily Challenge",
-      "isCompleted": false
+      "id": "2fc66419-f5c0-4d88-ae17-d7b34c486377",
+      "title": "LeetCode",
+      "description": "This is where growth",
+      "isCompleted": true
     }
   ]
 }

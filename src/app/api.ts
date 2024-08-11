@@ -57,3 +57,26 @@ export const deleteTask = async (id: string) => {
     }
 }
 
+
+
+export const editTaskAPI = async (id:string,title : string, description? :string)=> {
+    try {
+        const res = await fetch(`http://localhost:3001/tasks/${id}`, {
+            method: "PATCH",
+            headers: {
+                'Content-Type': "application/json",
+            },
+            body: JSON.stringify({title, description})
+        });
+
+        if (!res.ok) {
+            throw new Error(`Error: ${res.statusText}`);
+        }
+
+        const data = await res.json();
+        return data;
+    } catch (e) {
+        throw e;
+    }
+}
+
